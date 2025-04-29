@@ -46,7 +46,7 @@ splittable_sources = \
 # Used for CLEANFILES.
 
 split_sources = $(shell cd $(top_srcdir)/src && $(AWK) -F '[()]' ' \
-	/^\#.* defined\(__SPLIT__(\w+)\)/ { \
+	/^\#.* defined\(__SPLIT__([[:alnum:]_]+)\)/ { \
 		sub(/__SPLIT__/, ""); \
 		f = FILENAME; \
 		sub(/\.[^.]+/, "--" $$2 "&", f); \
@@ -69,7 +69,7 @@ endif
 %-split.mk: % Makefile
 	sort "$<" | uniq | $(AWK) -F '[()]' ' \
 		$(awk_ignore_nw) \
-		/^#.* defined\(__SPLIT__(\w+)\)/ { \
+		/^#.* defined\(__SPLIT__([[:alnum:]_]+)\)/ { \
 			tag = $$2; \
 			sub(/__SPLIT__/, "", tag); \
 			srcbase = "$(basename $(notdir $<))"; \
